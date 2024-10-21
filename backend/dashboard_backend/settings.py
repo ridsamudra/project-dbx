@@ -29,8 +29,6 @@ SECRET_KEY = 'django-insecure-t^)9*h#+o@tlqvzxi7*53a9sxwcfpefwfe8yu16$m%8*pjnunk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-# ALLOWED_HOSTS = ['dbx.bestparking.co.id', '147.79.66.24']
 ALLOWED_HOSTS = ['dbx.bestparking.co.id', 'localhost', '127.0.0.1']
 
 
@@ -222,18 +220,19 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/home/ridsamudra/project-dbx/backend/django-debug.log',  
+        'console': {
+            'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        '__name__': {
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
     },
 }
-

@@ -1,4 +1,66 @@
-venv/
-__pycache__/
+# Django Backend
+*.log
+*.pot
 *.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+static/
+
+# Django Virtual Environment
+venv/
+env/
 .env
+.venv/
+ENV/
+
+# Django Secret Keys
+*.env
+.env.local
+.env.*.local
+
+# Flutter Frontend
+/build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+*.class
+*.lock
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# Flutter Web Build
+/web/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+*.iml
+*.ipr
+*.iws
+.settings/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

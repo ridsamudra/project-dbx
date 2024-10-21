@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.db.models import Sum
+from django.utils import timezone
 from datetime import timedelta
 from decimal import Decimal
 from app_income_parkir.models import IncomeParkir
@@ -16,6 +17,7 @@ from app_users.utils import get_session_data_from_body, fetch_user_locations, is
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RevenueByDaysView(APIView):
+
     parser_classes = [JSONParser]
 
     def get(self, request, *args, **kwargs):
@@ -50,25 +52,70 @@ class RevenueByDaysView(APIView):
         except Exception as e:
             return Response({"status": "error", "message": f"Terjadi kesalahan: {str(e)}"}, status=500)
 
+    def should_show_member_data(self, target_date):
+        """
+        Menentukan apakah data member untuk bulan tertentu harus ditampilkan.
+        Data member hanya ditampilkan setelah tanggal 5 bulan berikutnya.
+        """
+        current_date = timezone.now().date()
+        
+        # Menentukan tanggal cutoff (tanggal 6 bulan berikutnya)
+        if target_date.month == 12:
+            cutoff_date = target_date.replace(year=target_date.year + 1, month=1, day=6)
+        else:
+            cutoff_date = target_date.replace(month=target_date.month + 1, day=6)
+        
+        return current_date >= cutoff_date
+
+    def filter_member_data(self, member_data, date):
+        """
+        Memfilter data member berdasarkan tanggal.
+        Jika belum melewati tanggal cutoff, data member akan diset menjadi 0.
+        """
+        show_member_data = self.should_show_member_data(date)
+        
+        if not show_member_data:
+            return Decimal('0')
+        
+        return member_data
+
     def view_all(self, locations):
         try:
             latest_date = IncomeParkir.objects.order_by('-tanggal').first().tanggal
             start_date = latest_date - timedelta(days=6)
 
             # Fetch data across all locations
-            parkir_data = IncomeParkir.objects.filter(id_lokasi__in=locations, tanggal__range=[start_date, latest_date]) \
-                .values('id_lokasi__site', 'tanggal') \
-                .annotate(cash=Sum('cash'), prepaid=Sum('prepaid')) \
-                .order_by('tanggal')
+            parkir_data = IncomeParkir.objects.filter(
+                id_lokasi__in=locations, 
+                tanggal__range=[start_date, latest_date]
+            ).values(
+                'id_lokasi__site', 
+                'tanggal'
+            ).annotate(
+                cash=Sum('cash'), 
+                prepaid=Sum('prepaid')
+            ).order_by('tanggal')
 
-            member_data = IncomeMember.objects.filter(id_lokasi__in=locations, tanggal__range=[start_date, latest_date]) \
-                .values('id_lokasi__site', 'tanggal') \
-                .annotate(member=Sum('member'))
+            member_data = IncomeMember.objects.filter(
+                id_lokasi__in=locations, 
+                tanggal__range=[start_date, latest_date]
+            ).values(
+                'id_lokasi__site', 
+                'tanggal'
+            ).annotate(
+                member=Sum('member')
+            )
 
-            manual_data = IncomeManual.objects.filter(id_lokasi__in=locations, tanggal__range=[start_date, latest_date]) \
-                .values('id_lokasi__site', 'tanggal') \
-                .annotate(manual=Sum('manual'), masalah=Sum('masalah')) \
-                .order_by('tanggal')
+            manual_data = IncomeManual.objects.filter(
+                id_lokasi__in=locations, 
+                tanggal__range=[start_date, latest_date]
+            ).values(
+                'id_lokasi__site', 
+                'tanggal'
+            ).annotate(
+                manual=Sum('manual'), 
+                masalah=Sum('masalah')
+            ).order_by('tanggal')
 
             # Initializing result dictionary with dates as keys
             result = {}
@@ -80,24 +127,44 @@ class RevenueByDaysView(APIView):
                 for location in locations:
                     site_name = location.site
 
-                    cash = Decimal(next((item['cash'] for item in parkir_data if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name), 0))
-                    prepaid = Decimal(next((item['prepaid'] for item in parkir_data if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name), 0))
-                    member = Decimal(next((item['member'] for item in member_data if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name), 0))
-                    manual = Decimal(next((item['manual'] for item in manual_data if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name), 0))
-                    masalah = Decimal(next((item['masalah'] for item in manual_data if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name), 0))
+                    cash = Decimal(next((
+                        item['cash'] for item in parkir_data 
+                        if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name
+                    ), 0))
+                    prepaid = Decimal(next((
+                        item['prepaid'] for item in parkir_data 
+                        if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name
+                    ), 0))
+                    
+                    # Apply member data filtering
+                    raw_member = Decimal(next((
+                        item['member'] for item in member_data 
+                        if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name
+                    ), 0))
+                    member = self.filter_member_data(raw_member, single_date)
+                    
+                    manual = Decimal(next((
+                        item['manual'] for item in manual_data 
+                        if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name
+                    ), 0))
+                    masalah = Decimal(next((
+                        item['masalah'] for item in manual_data 
+                        if item['tanggal'] == single_date and item['id_lokasi__site'] == site_name
+                    ), 0))
 
                     total = cash + prepaid + manual + member - masalah
 
                     # Append data for each location for that date
                     result[str(single_date)].append({
                         'nama_lokasi': site_name,
-                        'total': total  # Convert to string to match the output format
+                        'total': str(total)  # Convert to string to maintain consistency
                     })
 
                 # Ensure all locations are present in the result even if total is 0
+                existing_locations = {item['nama_lokasi'] for item in result[str(single_date)]}
                 for location in locations:
                     site_name = location.site
-                    if not any(loc['nama_lokasi'] == site_name for loc in result[str(single_date)]):
+                    if site_name not in existing_locations:
                         result[str(single_date)].append({
                             'nama_lokasi': site_name,
                             'total': '0'

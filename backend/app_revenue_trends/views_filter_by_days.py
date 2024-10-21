@@ -17,10 +17,7 @@ from app_users.utils import get_session_data_from_body, fetch_user_locations, is
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RevenueByDaysView(APIView):
-    """
-    API View untuk mengambil data pendapatan berdasarkan hari dengan aturan proteksi data member.
-    Menangani tampilan data agregat dan spesifik per lokasi.
-    """
+
     parser_classes = [JSONParser]
 
     def get(self, request, *args, **kwargs):
