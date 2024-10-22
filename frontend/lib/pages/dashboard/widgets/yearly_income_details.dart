@@ -305,79 +305,72 @@ class _YearlyIncomeDetailsState extends State<YearlyIncomeDetails> {
 
     List<CartesianSeries<Map<String, dynamic>, String>> series = [];
 
-    if (chartVisibility['Tarif']!) {
-      series.add(LineSeries<Map<String, dynamic>, String>(
-        name: 'Tarif',
+    // Helper function to create series without hover effect
+    LineSeries<Map<String, dynamic>, String> createSeries(
+      String name,
+      Color color,
+      num Function(Map<String, dynamic>) valueMapper,
+    ) {
+      return LineSeries<Map<String, dynamic>, String>(
+        name: name,
         dataSource: yearlyIncomeData,
         xValueMapper: (Map<String, dynamic> data, _) =>
             data['tahun'].toString(),
         yValueMapper: (Map<String, dynamic> data, _) =>
-            ((data['tarif_tunai'] as num?) ?? 0).toDouble() +
-            ((data['tarif_non_tunai'] as num?) ?? 0).toDouble(),
-        color: Colors.blue,
-        markerSettings: const MarkerSettings(isVisible: true),
+            valueMapper(data).toDouble(),
+        color: color,
+        width: 2,
+        markerSettings: const MarkerSettings(
+          isVisible: true,
+          height: 8,
+          width: 8,
+        ),
         dataLabelSettings: const DataLabelSettings(isVisible: false),
         enableTooltip: true,
+        animationDuration: 500,
+      );
+    }
+
+    // Add series with visibility check
+    if (chartVisibility['Tarif']!) {
+      series.add(createSeries(
+        'Tarif',
+        Colors.blue,
+        (data) =>
+            ((data['tarif_tunai'] as num?) ?? 0) +
+            ((data['tarif_non_tunai'] as num?) ?? 0),
       ));
     }
 
     if (chartVisibility['Member']!) {
-      series.add(LineSeries<Map<String, dynamic>, String>(
-        name: 'Member',
-        dataSource: yearlyIncomeData,
-        xValueMapper: (Map<String, dynamic> data, _) =>
-            data['tahun'].toString(),
-        yValueMapper: (Map<String, dynamic> data, _) =>
-            ((data['member'] as num?) ?? 0).toDouble(),
-        color: Colors.green,
-        markerSettings: const MarkerSettings(isVisible: true),
-        dataLabelSettings: const DataLabelSettings(isVisible: false),
-        enableTooltip: true,
+      series.add(createSeries(
+        'Member',
+        Colors.green,
+        (data) => (data['member'] as num?) ?? 0,
       ));
     }
 
     if (chartVisibility['Manual']!) {
-      series.add(LineSeries<Map<String, dynamic>, String>(
-        name: 'Manual',
-        dataSource: yearlyIncomeData,
-        xValueMapper: (Map<String, dynamic> data, _) =>
-            data['tahun'].toString(),
-        yValueMapper: (Map<String, dynamic> data, _) =>
-            ((data['manual'] as num?) ?? 0).toDouble(),
-        color: Colors.orange,
-        markerSettings: const MarkerSettings(isVisible: true),
-        dataLabelSettings: const DataLabelSettings(isVisible: false),
-        enableTooltip: true,
+      series.add(createSeries(
+        'Manual',
+        Colors.orange,
+        (data) => (data['manual'] as num?) ?? 0,
       ));
     }
 
     if (chartVisibility['Masalah']!) {
-      series.add(LineSeries<Map<String, dynamic>, String>(
-        name: 'Masalah',
-        dataSource: yearlyIncomeData,
-        xValueMapper: (Map<String, dynamic> data, _) =>
-            data['tahun'].toString(),
-        yValueMapper: (Map<String, dynamic> data, _) =>
-            ((data['tiket_masalah'] as num?) ?? 0).toDouble(),
-        color: Colors.red,
-        markerSettings: const MarkerSettings(isVisible: true),
-        dataLabelSettings: const DataLabelSettings(isVisible: false),
-        enableTooltip: true,
+      series.add(createSeries(
+        'Masalah',
+        Colors.red,
+        (data) => (data['tiket_masalah'] as num?) ?? 0,
       ));
     }
 
     if (chartVisibility['Total']!) {
-      series.add(LineSeries<Map<String, dynamic>, String>(
-        name: 'Total',
-        dataSource: yearlyIncomeData,
-        xValueMapper: (Map<String, dynamic> data, _) =>
-            data['tahun'].toString(),
-        yValueMapper: (Map<String, dynamic> data, _) =>
-            ((data['total_pendapatan'] as num?) ?? 0).toDouble(),
-        color: Colors.purple,
-        markerSettings: const MarkerSettings(isVisible: true),
-        dataLabelSettings: const DataLabelSettings(isVisible: false),
-        enableTooltip: true,
+      series.add(createSeries(
+        'Total',
+        Colors.purple,
+        (data) => (data['total_pendapatan'] as num?) ?? 0,
       ));
     }
 
@@ -401,10 +394,48 @@ class _YearlyIncomeDetailsState extends State<YearlyIncomeDetails> {
         ),
       ),
       legend: Legend(
-        isVisible: false,
+        isVisible: true,
+        position: LegendPosition.top,
+        alignment: ChartAlignment.center,
+        overflowMode: LegendItemOverflowMode.wrap,
+        padding: 15,
+        itemPadding: 10,
+        toggleSeriesVisibility: false,
+        legendItemBuilder:
+            (String name, dynamic series, dynamic point, int index) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: Responsive.isMobile(context) ? 8 : 12,
+                  height: Responsive.isMobile(context) ? 8 : 12,
+                  decoration: BoxDecoration(
+                    color: series.color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(width: Responsive.isMobile(context) ? 3 : 5),
+                Text(
+                  name,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: Responsive.getFontSize(context,
+                        mobile: 10, tablet: 16, desktop: 16),
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
       tooltipBehavior: TooltipBehavior(
         enable: true,
+        duration: 250,
+        animationDuration: 250,
         builder: (dynamic data, dynamic point, dynamic series, int pointIndex,
             int seriesIndex) {
           final value = point.y;
