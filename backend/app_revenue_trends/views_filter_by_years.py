@@ -105,14 +105,14 @@ class RevenueByYearsView(APIView):
                 prepaid=Sum('prepaid')
             ).order_by('year')
 
-            member_data = IncomeMember.objects.filter(
-                id_lokasi__in=locations, 
-                tanggal__range=[start_date, latest_date]
-            ).annotate(
-                year=TruncYear('tanggal')
-            ).values('year').annotate(
-                member=Sum('member')
-            )
+            # member_data = IncomeMember.objects.filter(
+            #     id_lokasi__in=locations, 
+            #     tanggal__range=[start_date, latest_date]
+            # ).annotate(
+            #     year=TruncYear('tanggal')
+            # ).values('year').annotate(
+            #     member=Sum('member')
+            # )
 
             # Ambil data manual
             manual_data = IncomeManual.objects.filter(

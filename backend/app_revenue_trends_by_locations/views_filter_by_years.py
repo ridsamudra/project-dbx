@@ -10,6 +10,7 @@ from rest_framework.parsers import JSONParser
 from django.db.models import Sum
 from django.db.models.functions import TruncYear
 from dateutil.relativedelta import relativedelta
+from django.utils import timezone
 from app_income_parkir.models import IncomeParkir
 from app_income_member.models import IncomeMember
 from app_income_manual.models import IncomeManual
@@ -51,6 +52,33 @@ class RevenueByYearsView(APIView):
         except Exception as e:
             return Response({"status": "error", "message": f"Terjadi kesalahan: {str(e)}"}, status=500)
 
+    def should_show_member_data(self, target_date):
+        """
+        Determines whether member data for a specific date should be shown.
+        Member data is only shown after the 5th of the following month.
+        """
+        current_date = timezone.now().date()
+        
+        # Determine cutoff date (6th day of next month)
+        if target_date.month == 12:
+            cutoff_date = target_date.replace(year=target_date.year + 1, month=1, day=6)
+        else:
+            cutoff_date = target_date.replace(month=target_date.month + 1, day=6)
+        
+        return current_date >= cutoff_date
+
+    def filter_member_data(self, member_data, target_date):
+        """
+        Filters member data based on date.
+        If cutoff date hasn't passed, member data will be set to 0.
+        """
+        show_member_data = self.should_show_member_data(target_date)
+        
+        if not show_member_data:
+            return Decimal('0')
+        
+        return member_data
+
     def view_all(self, locations):
         try:
             # Get the latest date in the database
@@ -63,11 +91,6 @@ class RevenueByYearsView(APIView):
                 .values('year', 'id_lokasi__site') \
                 .annotate(cash=Sum('cash'), prepaid=Sum('prepaid')) \
                 .order_by('year')
-
-            member_data = IncomeMember.objects.filter(id_lokasi__in=locations, tanggal__range=[start_date, latest_date]) \
-                .annotate(year=TruncYear('tanggal')) \
-                .values('year', 'id_lokasi__site') \
-                .annotate(member=Sum('member'))
 
             manual_data = IncomeManual.objects.filter(id_lokasi__in=locations, tanggal__range=[start_date, latest_date]) \
                 .annotate(year=TruncYear('tanggal')) \
@@ -83,30 +106,57 @@ class RevenueByYearsView(APIView):
 
                 for location in locations:
                     site_name = location.site
-                    
-                    cash = Decimal(next((item['cash'] for item in parkir_data if item['year'].year == year_data['year'].year and item['id_lokasi__site'] == site_name), 0))
-                    prepaid = Decimal(next((item['prepaid'] for item in parkir_data if item['year'].year == year_data['year'].year and item['id_lokasi__site'] == site_name), 0))
-                    member = Decimal(next((item['member'] for item in member_data if item['year'].year == year_data['year'].year and item['id_lokasi__site'] == site_name), 0))
-                    manual = Decimal(next((item['manual'] for item in manual_data if item['year'].year == year_data['year'].year and item['id_lokasi__site'] == site_name), 0))
-                    
-                    masalah = Decimal(next((item['masalah'] for item in manual_data if item['year'].year == year_data['year'].year and item['id_lokasi__site'] == site_name), 0))
+                    current_year = year_data['year'].year
+                    total_member = Decimal('0')
 
-                    total = cash + prepaid + member + manual - masalah
+                    # Calculate member data with protection for each month
+                    for month in range(1, 13):
+                        target_date = year_data['year'].replace(month=month, day=1)
+                        
+                        # Get member data for this month and location
+                        month_member_data = IncomeMember.objects.filter(
+                            id_lokasi__site=site_name,
+                            tanggal__year=current_year,
+                            tanggal__month=month
+                        ).aggregate(Sum('member'))['member__sum'] or Decimal('0')
+                        
+                        # Apply member data protection
+                        filtered_member_data = self.filter_member_data(month_member_data, target_date)
+                        total_member += filtered_member_data
+
+                    cash = Decimal(next((
+                        item['cash'] for item in parkir_data 
+                        if item['year'].year == current_year and item['id_lokasi__site'] == site_name
+                    ), 0))
+                    prepaid = Decimal(next((
+                        item['prepaid'] for item in parkir_data 
+                        if item['year'].year == current_year and item['id_lokasi__site'] == site_name
+                    ), 0))
+                    manual = Decimal(next((
+                        item['manual'] for item in manual_data 
+                        if item['year'].year == current_year and item['id_lokasi__site'] == site_name
+                    ), 0))
+                    masalah = Decimal(next((
+                        item['masalah'] for item in manual_data 
+                        if item['year'].year == current_year and item['id_lokasi__site'] == site_name
+                    ), 0))
+
+                    total = cash + prepaid + total_member + manual - masalah
 
                     result[year_key].append({
                         'nama_lokasi': site_name,
                         'total': str(total)
                     })
 
-                # Ensure all locations are present in the result even if total is 0
-                for year_key in result.keys():
-                    for location in locations:
-                        site_name = location.site
-                        if not any(loc['nama_lokasi'] == site_name for loc in result[year_key]):
-                            result[year_key].append({
-                                'nama_lokasi': site_name,
-                                'total': '0'
-                            })
+            # Ensure all locations are present in the result even if total is 0
+            for year_key in result.keys():
+                for location in locations:
+                    site_name = location.site
+                    if not any(loc['nama_lokasi'] == site_name for loc in result[year_key]):
+                        result[year_key].append({
+                            'nama_lokasi': site_name,
+                            'total': '0'
+                        })
 
             return Response(result, status=200)
 

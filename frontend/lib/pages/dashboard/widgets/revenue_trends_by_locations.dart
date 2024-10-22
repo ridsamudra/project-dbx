@@ -327,6 +327,8 @@ class _RevenueTrendsByLocationsState extends State<RevenueTrendsByLocations> {
                           gridData: const FlGridData(show: false),
                           barTouchData: BarTouchData(
                             touchTooltipData: BarTouchTooltipData(
+                              fitInsideHorizontally: true,
+                              fitInsideVertically: true,
                               getTooltipItem:
                                   (group, groupIndex, rod, rodIndex) {
                                 String locationName = locationNames[rodIndex];

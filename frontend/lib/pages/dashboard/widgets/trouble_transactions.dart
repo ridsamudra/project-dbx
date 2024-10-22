@@ -45,8 +45,6 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
     Colors.brown.shade300,
   ];
 
-  // [Method initState, fetchTroubleData, processData, adjustMaxY, formatDate, _formatMonthYear, formatNumber, dan getTitles tetap sama]
-
   @override
   void initState() {
     super.initState();
@@ -337,6 +335,8 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
                           gridData: const FlGridData(show: false),
                           barTouchData: BarTouchData(
                             touchTooltipData: BarTouchTooltipData(
+                              fitInsideHorizontally: true,
+                              fitInsideVertically: true,
                               getTooltipItem:
                                   (group, groupIndex, rod, rodIndex) {
                                 String locationName = locationNames[rodIndex];
