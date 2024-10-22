@@ -17,7 +17,12 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: TextStyle(
-          fontSize: Responsive.getFontSize(context),
+          fontSize: Responsive.getFontSize(
+            context,
+            mobile: 12, // Custom responsive size untuk mobile
+            tablet: 20, // Custom responsive size untuk tablet
+            desktop: 20, // Custom responsive size untuk desktop
+          ),
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w600,
         ),
