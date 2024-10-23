@@ -8,9 +8,9 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.db.models import Sum, Max
 from django.utils import timezone
+from .serializers import RevenueByLocationsSerializer
 from app_users.utils import get_session_data_from_body, fetch_user_locations, is_admin_user
 from app_revenue_realtime.models import RevenueRealtime
-from app_revenue_realtime.serializers import RevenueByLocationsSerializer
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RevenueByLocationsView(APIView):
@@ -71,32 +71,49 @@ class RevenueByLocationsView(APIView):
         
         for location in locations:
             # Cek transaksi hari ini
-            today_transaction = RevenueRealtime.objects.filter(
+            today_data = RevenueRealtime.objects.filter(
                 id_lokasi=location,
                 tanggal=today
-            ).order_by('-waktu').first()
+            ).aggregate(
+                latest_time=Max('waktu'),
+                total_transaksi=Sum('qty'),
+                total_pendapatan=Sum('jumlah')
+            )
             
-            if today_transaction:
+            if today_data['latest_time']:
                 # Ada transaksi hari ini
                 location_data[location] = {
-                    'waktu': today_transaction.waktu,
+                    'waktu': today_data['latest_time'],
                     'tanggal': today,
+                    'total_transaksi': today_data['total_transaksi'] or 0,
+                    'total_pendapatan': int(today_data['total_pendapatan'] or 0),
                     'has_today_transaction': True
                 }
             else:
-                # Tidak ada transaksi hari ini, cari transaksi terakhir
-                last_transaction = RevenueRealtime.objects.filter(
+                # Cari data transaksi terakhir
+                last_data = RevenueRealtime.objects.filter(
                     id_lokasi=location
-                ).order_by('-waktu').first()
+                ).order_by('-tanggal', '-waktu').first()
                 
-                if last_transaction:
+                if last_data:
+                    # Ambil total untuk tanggal terakhir
+                    last_date_data = RevenueRealtime.objects.filter(
+                        id_lokasi=location,
+                        tanggal=last_data.tanggal,
+                        waktu__lte=last_data.waktu
+                    ).aggregate(
+                        total_transaksi=Sum('qty'),
+                        total_pendapatan=Sum('jumlah')
+                    )
+                    
                     location_data[location] = {
-                        'waktu': last_transaction.waktu,
-                        'tanggal': last_transaction.tanggal,
+                        'waktu': last_data.waktu,
+                        'tanggal': last_data.tanggal,
+                        'total_transaksi': last_date_data['total_transaksi'] or 0,
+                        'total_pendapatan': int(last_date_data['total_pendapatan'] or 0),
                         'has_today_transaction': False
                     }
                 else:
-                    # Tidak ada transaksi sama sekali untuk lokasi ini
                     location_data[location] = None
                 
         return location_data
@@ -105,58 +122,39 @@ class RevenueByLocationsView(APIView):
         try:
             location_latest_data = self.get_latest_data_per_location(locations)
             
-            if not any(location_latest_data.values()):
+            # Filter out locations with no data
+            active_locations = {loc: data for loc, data in location_latest_data.items() if data is not None}
+            
+            if not active_locations:
                 return Response({"detail": "No data available for any location"}, status=404)
 
             data_list = []
-            for location in locations:
-                latest_data = location_latest_data[location]
+            for location, latest_data in active_locations.items():
+                # Terapkan filter member data
+                base_queryset = RevenueRealtime.objects.filter(
+                    id_lokasi=location,
+                    tanggal=latest_data['tanggal'],
+                    waktu__lte=latest_data['waktu']
+                )
                 
-                if latest_data:
-                    if latest_data['has_today_transaction']:
-                        # Gunakan data hari ini
-                        base_queryset = RevenueRealtime.objects.filter(
-                            id_lokasi=location,
-                            tanggal=latest_data['tanggal'],
-                            waktu__lte=latest_data['waktu']
-                        )
-                    else:
-                        # Tidak ada transaksi hari ini, set total ke 0 tapi tetap tampilkan waktu terakhir
-                        base_queryset = RevenueRealtime.objects.none()
+                if base_queryset.exists():
+                    filtered_queryset = self.filter_member_data(base_queryset, latest_data['tanggal'])
                     
-                    # Apply member data filter jika ada data
-                    if base_queryset.exists():
-                        filtered_queryset = self.filter_member_data(base_queryset, latest_data['tanggal'])
-                        
-                        # Aggregate data
-                        aggregated_data = filtered_queryset.aggregate(
-                            total_transaksi=Sum('qty'),
-                            total_pendapatan=Sum('jumlah')
-                        )
-                    else:
-                        aggregated_data = {
-                            'total_transaksi': 0,
-                            'total_pendapatan': 0
-                        }
-
+                    # Aggregate data
+                    aggregated_data = filtered_queryset.aggregate(
+                        total_transaksi=Sum('qty'),
+                        total_pendapatan=Sum('jumlah')
+                    )
+                    
                     data = {
                         "waktu": latest_data['waktu'],
                         "id_lokasi": location.site,
                         "total_transaksi": aggregated_data['total_transaksi'] or 0,
                         "total_pendapatan": int(aggregated_data['total_pendapatan'] or 0)
                     }
-                else:
-                    # Tidak ada transaksi sama sekali untuk lokasi ini
-                    data = {
-                        "waktu": None,
-                        "id_lokasi": location.site,
-                        "total_transaksi": 0,
-                        "total_pendapatan": 0
-                    }
-
-                serializer = RevenueByLocationsSerializer(data)
-                data_list.append(serializer.data)
-
+                    serializer = RevenueByLocationsSerializer(data)
+                    data_list.append(serializer.data)
+                    
             return Response(data_list)
 
         except Exception as e:
@@ -166,55 +164,37 @@ class RevenueByLocationsView(APIView):
         try:
             location_latest_data = self.get_latest_data_per_location(locations)
             
-            if not any(location_latest_data.values()):
+            # Filter out locations with no data
+            active_locations = {loc: data for loc, data in location_latest_data.items() if data is not None}
+            
+            if not active_locations:
                 return Response({"detail": "No data available for any location"}, status=404)
 
-            location_data = {location.site: [] for location in locations}
+            location_data = {}
             
-            for location in locations:
-                latest_data = location_latest_data[location]
+            for location, latest_data in active_locations.items():
+                # Terapkan filter member data
+                base_queryset = RevenueRealtime.objects.filter(
+                    id_lokasi=location,
+                    tanggal=latest_data['tanggal'],
+                    waktu__lte=latest_data['waktu']
+                )
                 
-                if latest_data:
-                    if latest_data['has_today_transaction']:
-                        # Gunakan data hari ini
-                        base_queryset = RevenueRealtime.objects.filter(
-                            id_lokasi=location,
-                            tanggal=latest_data['tanggal'],
-                            waktu__lte=latest_data['waktu']
-                        )
-                    else:
-                        # Tidak ada transaksi hari ini, set total ke 0 tapi tetap tampilkan waktu terakhir
-                        base_queryset = RevenueRealtime.objects.none()
+                if base_queryset.exists():
+                    filtered_queryset = self.filter_member_data(base_queryset, latest_data['tanggal'])
                     
-                    # Apply member data filter jika ada data
-                    if base_queryset.exists():
-                        filtered_queryset = self.filter_member_data(base_queryset, latest_data['tanggal'])
-                        
-                        # Aggregate data
-                        aggregated_data = filtered_queryset.aggregate(
-                            total_transaksi=Sum('qty'),
-                            total_pendapatan=Sum('jumlah')
-                        )
-                    else:
-                        aggregated_data = {
-                            'total_transaksi': 0,
-                            'total_pendapatan': 0
-                        }
-
-                    location_data[location.site].append({
+                    # Aggregate data
+                    aggregated_data = filtered_queryset.aggregate(
+                        total_transaksi=Sum('qty'),
+                        total_pendapatan=Sum('jumlah')
+                    )
+                    
+                    location_data[location.site] = [{
                         "waktu": latest_data['waktu'],
                         "id_lokasi": location.site,
                         "total_transaksi": aggregated_data['total_transaksi'] or 0,
                         "total_pendapatan": int(aggregated_data['total_pendapatan'] or 0)
-                    })
-                else:
-                    # Tidak ada transaksi sama sekali untuk lokasi ini
-                    location_data[location.site].append({
-                        "waktu": None,
-                        "id_lokasi": location.site,
-                        "total_transaksi": 0,
-                        "total_pendapatan": 0
-                    })
+                    }]
 
             return Response(location_data)
 

@@ -413,13 +413,6 @@ class _TrafficHoursState extends State<TrafficHours> {
   }
 
   FlTitlesData _getTitlesData() {
-    final fontSize = Responsive.getFontSize(
-      context,
-      mobile: 10,
-      tablet: 11,
-      desktop: 12,
-    );
-
     return FlTitlesData(
       bottomTitles: AxisTitles(
         sideTitles: SideTitles(
@@ -431,10 +424,14 @@ class _TrafficHoursState extends State<TrafficHours> {
               child: Text(
                 value.toInt().toString(),
                 style: TextStyle(
-                  fontSize: fontSize,
                   fontFamily: 'Montserrat',
-                  color: const Color(0xFF757575),
-                  fontWeight: FontWeight.w500,
+                  fontSize: Responsive.getFontSize(
+                    context,
+                    mobile: 8,
+                    tablet: 10,
+                    desktop: 12,
+                  ),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             );
@@ -451,10 +448,14 @@ class _TrafficHoursState extends State<TrafficHours> {
               child: Text(
                 numberFormat.format(value.toInt()),
                 style: TextStyle(
-                  fontSize: fontSize,
                   fontFamily: 'Montserrat',
-                  color: const Color(0xFF757575),
-                  fontWeight: FontWeight.w500,
+                  fontSize: Responsive.getFontSize(
+                    context,
+                    mobile: 8,
+                    tablet: 10,
+                    desktop: 12,
+                  ),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             );

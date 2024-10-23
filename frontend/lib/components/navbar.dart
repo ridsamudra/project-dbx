@@ -20,14 +20,15 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
           fontSize: Responsive.getFontSize(
             context,
             mobile: 12, // Custom responsive size untuk mobile
-            tablet: 20, // Custom responsive size untuk tablet
-            desktop: 20, // Custom responsive size untuk desktop
+            tablet: 16, // Custom responsive size untuk tablet
+            desktop: 16, // Custom responsive size untuk desktop
           ),
           fontFamily: 'Montserrat',
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.bold,
         ),
       ),
-      backgroundColor: Colors.white,
+      // backgroundColor:
+      //     Color(0xFFfc8404).withOpacity(0.75), // Warna background yang lo minta
       elevation: 0,
       scrolledUnderElevation: 0, // Prevents shadow when scrolled under
       surfaceTintColor: Colors.transparent, // Prevents color tint when scrolled

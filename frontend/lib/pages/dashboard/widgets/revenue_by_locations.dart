@@ -118,6 +118,85 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      color: Colors.white,
+      child: Padding(
+        padding: Responsive.getPadding(
+          context,
+          mobile: const EdgeInsets.all(12),
+          tablet: const EdgeInsets.all(16),
+          desktop: const EdgeInsets.all(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Pendapatan Tiap Lokasi',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: const Color(0xFF757575),
+                    fontSize: Responsive.getFontSize(
+                      context,
+                      mobile: 10,
+                      tablet: 16,
+                      desktop: 16,
+                    ),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                _buildFilterButton(),
+              ],
+            ),
+            SizedBox(height: Responsive.isMobile(context) ? 12.0 : 16.0),
+            if (isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (errorMessage != null)
+              _buildErrorWidget()
+            else
+              _buildDataWidget(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterButton() {
+    return ElevatedButton.icon(
+      icon: Icon(Icons.location_on,
+          size: Responsive.getFontSize(context,
+              mobile: 12, tablet: 16, desktop: 18)),
+      label: Text(
+        selectedLocation ?? 'Pilih Lokasi',
+        style: TextStyle(
+          fontSize: Responsive.getFontSize(context,
+              mobile: 10, tablet: 14, desktop: 14),
+          fontFamily: 'Montserrat',
+        ),
+      ),
+      onPressed: _openFilterDialog,
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black87,
+        backgroundColor: Colors.white,
+        elevation: 2,
+        padding: Responsive.getPadding(
+          context,
+          mobile: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          tablet: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          desktop: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
+    );
+  }
+
   void _openFilterDialog() async {
     final selected = await showDialog<String>(
       context: context,
@@ -186,85 +265,6 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
         _dataFuture = fetchRevenueByLocations(selectedLocation);
       });
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: Responsive.isMobile(context)
-          ? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0)
-          : const EdgeInsets.symmetric(
-              vertical: 8.0), // Keeping original desktop margin
-      color: Colors.white,
-      child: Padding(
-        padding: Responsive.isMobile(context)
-            ? const EdgeInsets.all(12.0)
-            : const EdgeInsets.all(16.0), // Keeping original desktop padding
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Pendapatan Tiap Lokasi',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    color: const Color(0xFF757575),
-                    fontSize: Responsive.getFontSize(
-                      context,
-                      mobile: 10,
-                      tablet: 16,
-                      desktop: 16,
-                    ),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _buildFilterButton(),
-              ],
-            ),
-            SizedBox(height: Responsive.isMobile(context) ? 12.0 : 16.0),
-            if (isLoading)
-              const Center(child: CircularProgressIndicator())
-            else if (errorMessage != null)
-              _buildErrorWidget()
-            else
-              _buildDataWidget(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterButton() {
-    return ElevatedButton.icon(
-      icon: Icon(Icons.location_on,
-          size: Responsive.getFontSize(context,
-              mobile: 12, tablet: 16, desktop: 18)),
-      label: Text(
-        selectedLocation ?? 'Pilih Lokasi',
-        style: TextStyle(
-          fontSize: Responsive.getFontSize(context,
-              mobile: 10, tablet: 14, desktop: 14),
-          fontFamily: 'Montserrat',
-        ),
-      ),
-      onPressed: _openFilterDialog,
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black87,
-        backgroundColor: Colors.white,
-        elevation: 2,
-        padding: Responsive.getPadding(
-          context,
-          mobile: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          tablet: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          desktop: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
-    );
   }
 
   Widget _buildErrorWidget() {
@@ -337,10 +337,11 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
                   children: [
                     Text(
                       entry.key,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Montserrat',
-                        color: Color(0xFF757575),
-                        fontSize: 18,
+                        color: const Color(0xFF757575),
+                        fontSize: Responsive.getFontSize(context,
+                            mobile: 10, tablet: 14, desktop: 14),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -360,43 +361,97 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
   }
 
   Widget _buildTable(List<dynamic> data) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: Responsive.isMobile(context)
-              ? MediaQuery.of(context).size.width - 32
-              : MediaQuery.of(context).size.width -
-                  32, // Keeping original desktop constraint
-        ),
-        child: DataTable(
-          columnSpacing: Responsive.isMobile(context) ? 15 : 20,
-          horizontalMargin: Responsive.isMobile(context) ? 10 : 24,
-          headingRowHeight: Responsive.isMobile(context) ? 48 : 56,
-          dataRowHeight: Responsive.isMobile(context) ? 48 : 52,
-          headingRowColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) => Colors.grey[200]),
-          dataRowColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) => Colors.white),
-          columns: _buildTableColumns(),
-          rows: _buildDataRows(data),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: Responsive.isMobile(context)
+                ? MediaQuery.of(context).size.width - 32
+                : MediaQuery.of(context).size.width - 32,
+          ),
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              dividerColor: Colors.grey.shade200,
+              dataTableTheme: DataTableTheme.of(context).copyWith(
+                headingTextStyle: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: Responsive.getFontSize(context,
+                      mobile: 10, tablet: 14, desktop: 14),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade800,
+                ),
+                dataTextStyle: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: Responsive.getFontSize(context,
+                      mobile: 10, tablet: 14, desktop: 14),
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ),
+            child: DataTable(
+              columnSpacing: Responsive.isMobile(context) ? 16 : 24,
+              horizontalMargin: Responsive.isMobile(context) ? 12 : 16,
+              headingRowHeight: Responsive.isMobile(context) ? 45 : 50,
+              dataRowHeight: Responsive.isMobile(context) ? 45 : 50,
+              headingRowColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) => Colors.grey.shade50,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              border: TableBorder(
+                horizontalInside: BorderSide(color: Colors.grey.shade200),
+                verticalInside: BorderSide(color: Colors.grey.shade200),
+              ),
+              columns: _buildTableColumns(),
+              rows: _buildDataRows(data),
+            ),
+          ),
         ),
       ),
     );
   }
 
   List<DataColumn> _buildTableColumns() {
-    final textStyle = TextStyle(
+    final headerStyle = TextStyle(
       fontFamily: 'Montserrat',
-      fontSize: Responsive.isMobile(context) ? 12 : 14,
+      fontSize:
+          Responsive.getFontSize(context, mobile: 10, tablet: 14, desktop: 14),
       fontWeight: FontWeight.bold,
+      color: Colors.grey.shade800,
     );
 
     return [
-      DataColumn(label: Text('Waktu', style: textStyle)),
-      DataColumn(label: Text('Titik Lokasi', style: textStyle)),
-      DataColumn(label: Text('Total Transaksi', style: textStyle)),
-      DataColumn(label: Text('Total Pendapatan', style: textStyle)),
+      DataColumn(
+        label: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text('Waktu', style: headerStyle),
+        ),
+      ),
+      DataColumn(
+        label: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text('Titik Lokasi', style: headerStyle),
+        ),
+      ),
+      DataColumn(
+        label: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text('Total Transaksi', style: headerStyle),
+        ),
+      ),
+      DataColumn(
+        label: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text('Total Pendapatan', style: headerStyle),
+        ),
+      ),
     ];
   }
 
@@ -407,29 +462,52 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
       decimalDigits: 0,
     );
 
-    final textStyle = TextStyle(
+    final cellStyle = TextStyle(
       fontFamily: 'Montserrat',
-      fontSize: Responsive.isMobile(context) ? 12 : 14,
-      fontWeight: FontWeight.w500,
+      fontSize:
+          Responsive.getFontSize(context, mobile: 10, tablet: 14, desktop: 14),
+      color: Colors.grey.shade700,
+      fontWeight: FontWeight.w600,
     );
 
     return data.map((row) {
       return DataRow(
         cells: [
-          DataCell(Text(
-            DateFormat('dd-MM-yyyy HH:mm:ss')
-                .format(DateTime.parse(row['waktu'])),
-            style: textStyle,
-          )),
-          DataCell(Text(row['id_lokasi'], style: textStyle)),
-          DataCell(Text(
-            NumberFormat.decimalPattern('id_ID').format(row['total_transaksi']),
-            style: textStyle,
-          )),
-          DataCell(Text(
-            currencyFormat.format(row['total_pendapatan']),
-            style: textStyle,
-          )),
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                DateFormat('dd-MM-yyyy HH:mm:ss')
+                    .format(DateTime.parse(row['waktu'])),
+                style: cellStyle,
+              ),
+            ),
+          ),
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(row['id_lokasi'], style: cellStyle),
+            ),
+          ),
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                NumberFormat.decimalPattern('id_ID')
+                    .format(row['total_transaksi']),
+                style: cellStyle,
+              ),
+            ),
+          ),
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                currencyFormat.format(row['total_pendapatan']),
+                style: cellStyle,
+              ),
+            ),
+          ),
         ],
       );
     }).toList();

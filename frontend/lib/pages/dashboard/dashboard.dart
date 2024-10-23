@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import '../../components/sidebar.dart';
 import '../../components/responsive.dart';
+import '../../components/navbar.dart'; // Added navbar import
 import 'widgets/revenue_summary_cards.dart';
 import 'widgets/revenue_percentage.dart';
 import 'widgets/post_status.dart';
@@ -22,22 +23,11 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Halaman Utama',
-          style: TextStyle(
-            fontSize: Responsive.getFontSize(
-              context,
-              mobile: 12,
-              tablet: 20,
-              desktop: 20,
-            ),
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
+      appBar: const Navbar(
+          title: 'Halaman Utama Dashboard'), // Replaced AppBar with Navbar
       drawer: const Sidebar(),
+      // backgroundColor:
+      //     Color(0xFFfc8404).withOpacity(0.75), // Set background color here
       body: SingleChildScrollView(
         child: Padding(
           padding: Responsive.getPadding(context),

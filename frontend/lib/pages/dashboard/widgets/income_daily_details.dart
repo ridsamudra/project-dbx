@@ -384,7 +384,7 @@ class _DailyIncomeDetailsState extends State<DailyIncomeDetails> {
           fontFamily: 'Montserrat',
           fontSize: Responsive.getFontSize(context,
               mobile: 8, tablet: 10, desktop: 12),
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
       ),
       primaryYAxis: NumericAxis(
@@ -394,7 +394,7 @@ class _DailyIncomeDetailsState extends State<DailyIncomeDetails> {
           fontFamily: 'Montserrat',
           fontSize: Responsive.getFontSize(context,
               mobile: 8, tablet: 10, desktop: 12),
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
       ),
       legend: Legend(
@@ -424,11 +424,11 @@ class _DailyIncomeDetailsState extends State<DailyIncomeDetails> {
                 Text(
                   name,
                   style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: Responsive.getFontSize(context,
-                        mobile: 10, tablet: 16, desktop: 16),
+                    // color: Colors.black87,
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w500,
+                    fontSize: Responsive.getFontSize(context,
+                        mobile: 8, tablet: 10, desktop: 12),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
@@ -665,7 +665,7 @@ class _DailyIncomeDetailsState extends State<DailyIncomeDetails> {
                   'Export Data',
                   style: TextStyle(
                     fontSize: Responsive.getFontSize(context,
-                        mobile: 16, tablet: 18, desktop: 20),
+                        mobile: 10, tablet: 14, desktop: 14),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -674,7 +674,7 @@ class _DailyIncomeDetailsState extends State<DailyIncomeDetails> {
                   'Pilih format export:',
                   style: TextStyle(
                     fontSize: Responsive.getFontSize(context,
-                        mobile: 14, tablet: 16, desktop: 16),
+                        mobile: 10, tablet: 14, desktop: 14),
                   ),
                 ),
                 SizedBox(height: Responsive.isMobile(context) ? 12 : 16),
@@ -686,7 +686,7 @@ class _DailyIncomeDetailsState extends State<DailyIncomeDetails> {
                         'PDF',
                         style: TextStyle(
                           fontSize: Responsive.getFontSize(context,
-                              mobile: 14, tablet: 16, desktop: 16),
+                              mobile: 8, tablet: 14, desktop: 14),
                         ),
                       ),
                       onPressed: () {
@@ -699,7 +699,7 @@ class _DailyIncomeDetailsState extends State<DailyIncomeDetails> {
                         'Excel',
                         style: TextStyle(
                           fontSize: Responsive.getFontSize(context,
-                              mobile: 14, tablet: 16, desktop: 16),
+                              mobile: 8, tablet: 14, desktop: 14),
                         ),
                       ),
                       onPressed: () {

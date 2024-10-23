@@ -124,8 +124,8 @@ class _SummaryCardsState extends State<SummaryCards> {
                       color: Colors.grey[700],
                       fontSize: Responsive.getFontSize(
                         context,
-                        mobile: 12,
-                        tablet: 14,
+                        mobile: 10,
+                        tablet: 16,
                         desktop: 16,
                       ),
                       fontWeight: FontWeight.bold,
@@ -141,9 +141,9 @@ class _SummaryCardsState extends State<SummaryCards> {
                         color: Colors.black,
                         fontSize: Responsive.getFontSize(
                           context,
-                          mobile: 14,
-                          tablet: 20,
-                          desktop: 24,
+                          mobile: 12,
+                          tablet: 18,
+                          desktop: 18,
                         ),
                         fontWeight: FontWeight.bold,
                       ),

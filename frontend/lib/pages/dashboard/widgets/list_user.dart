@@ -563,7 +563,7 @@ class _ListUsersState extends State<ListUsers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(title: 'Manage Users'),
+      appBar: Navbar(title: 'Pengaturan User'),
       drawer: const Sidebar(),
       body: SafeArea(
         child: Center(

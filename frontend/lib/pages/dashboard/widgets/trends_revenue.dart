@@ -276,7 +276,7 @@ class _RevenueTrendsState extends State<RevenueTrends> {
               tablet: 10,
               desktop: 12,
             ),
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
           ),
         ),
       );

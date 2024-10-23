@@ -202,12 +202,19 @@ class _RevenueTrendsByLocationsState extends State<RevenueTrendsByLocations> {
     if (index < dateLabels.length) {
       return SideTitleWidget(
         axisSide: meta.axisSide,
-        child: Text(dateLabels[index],
-            style: const TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            )),
+        child: Text(
+          dateLabels[index],
+          style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: Responsive.getFontSize(
+              context,
+              mobile: 8,
+              tablet: 10,
+              desktop: 12,
+            ),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       );
     }
     return const Text('');

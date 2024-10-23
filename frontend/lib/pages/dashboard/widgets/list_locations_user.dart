@@ -340,7 +340,7 @@ class _UsersLocationsState extends State<UsersLocations> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(title: 'Manage User Locations'),
+      appBar: Navbar(title: 'Pengaturan Lokasi User'),
       drawer: const Sidebar(),
       body: SafeArea(
         child: Center(

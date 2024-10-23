@@ -380,7 +380,7 @@ class _YearlyIncomeDetailsState extends State<YearlyIncomeDetails> {
           fontFamily: 'Montserrat',
           fontSize: Responsive.getFontSize(context,
               mobile: 8, tablet: 10, desktop: 12),
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
       ),
       primaryYAxis: NumericAxis(
@@ -390,7 +390,7 @@ class _YearlyIncomeDetailsState extends State<YearlyIncomeDetails> {
           fontFamily: 'Montserrat',
           fontSize: Responsive.getFontSize(context,
               mobile: 8, tablet: 10, desktop: 12),
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
       ),
       legend: Legend(
@@ -422,9 +422,9 @@ class _YearlyIncomeDetailsState extends State<YearlyIncomeDetails> {
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: Responsive.getFontSize(context,
-                        mobile: 10, tablet: 16, desktop: 16),
+                        mobile: 8, tablet: 10, desktop: 12),
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
