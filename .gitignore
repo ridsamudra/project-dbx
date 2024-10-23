@@ -44,6 +44,9 @@ ENV/
 # Flutter Web Build
 /web/
 
+# Flutter Cache File
+frontend/build/cache.dill.track.dill
+
 # IDE specific files
 .idea/
 .vscode/
