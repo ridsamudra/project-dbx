@@ -1,9 +1,9 @@
 // lib/pages/dashboard/widgets/combined_widget_details.dart
 
 import 'package:flutter/material.dart';
-import 'daily_income_details.dart';
-import 'monthly_income_details.dart';
-import 'yearly_income_details.dart';
+import 'income_daily_details.dart';
+import 'income_monthly_details.dart';
+import 'income_yearly_details.dart';
 import '../../../components/sidebar.dart';
 import '../../../components/navbar.dart';
 import '../../../components/responsive.dart';

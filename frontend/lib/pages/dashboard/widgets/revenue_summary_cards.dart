@@ -20,6 +20,7 @@ class SummaryCards extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _SummaryCardsState createState() => _SummaryCardsState();
 }
 
@@ -153,11 +154,11 @@ class _SummaryCardsState extends State<SummaryCards> {
                     'Last updated: ${data['lastUpdated']}',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w500,
                       fontSize: Responsive.getFontSize(
                         context,
                         mobile: 8,
-                        tablet: 11,
+                        tablet: 12,
                         desktop: 12,
                       ),
                       color: Colors.grey[600],

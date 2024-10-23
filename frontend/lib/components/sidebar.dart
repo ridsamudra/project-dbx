@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/browser_client.dart';
 import 'package:frontend/services/auth_service.dart';
 import '../pages/dashboard/widgets/combined_widget_details.dart';
-import '../pages/dashboard/widgets/users_lists.dart';
-import '../pages/dashboard/widgets/users_locations.dart';
+import '../pages/dashboard/widgets/list_user.dart';
+import '../pages/dashboard/widgets/list_locations_user.dart';
 import '../pages/dashboard/widgets/change_password.dart';
 import '../components/responsive.dart';
 

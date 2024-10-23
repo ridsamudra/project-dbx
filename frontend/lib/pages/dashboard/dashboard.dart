@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import '../../components/sidebar.dart';
-import 'widgets/summary_cards.dart';
-import 'widgets/revenue_realtime_percentage.dart';
+import '../../components/responsive.dart';
+import 'widgets/revenue_summary_cards.dart';
+import 'widgets/revenue_percentage.dart';
 import 'widgets/post_status.dart';
 import 'widgets/revenue_by_locations.dart';
-import 'widgets/combined_widget.dart';
 import 'widgets/traffic_hours.dart';
-import '../../components/responsive.dart';
+import 'widgets/combined_widget.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

@@ -1,9 +1,9 @@
 // lib/pages/dashboard/widgets/combined_widget.dart
 
 import 'package:flutter/material.dart';
-import 'revenue_trends.dart';
-import 'revenue_trends_by_locations.dart';
-import 'trouble_transactions.dart';
+import 'trends_revenue.dart';
+import 'trends_revenue_by_locations.dart';
+import 'trends_trouble_transactions.dart';
 import '../../../components/responsive.dart';
 
 class CombinedRevenueWidget extends StatefulWidget {
