@@ -240,7 +240,7 @@ class _LoginPageState extends State<LoginPage>
             onPressed: _isLoading ? null : _login,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: Color(0xFF5141C0).withOpacity(0.75),
+              backgroundColor: const Color(0xFFfc8404).withOpacity(0.75),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
