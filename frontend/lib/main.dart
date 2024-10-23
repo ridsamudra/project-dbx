@@ -1,7 +1,7 @@
 // lib/main.dart
 
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/login/login_page.dart';
+import 'package:frontend/pages/pages/login_page.dart';
 import 'package:frontend/pages/dashboard/dashboard.dart';
 
 void main() {
