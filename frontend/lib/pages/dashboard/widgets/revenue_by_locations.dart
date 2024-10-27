@@ -398,8 +398,8 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
               horizontalMargin: Responsive.isMobile(context) ? 12 : 16,
               headingRowHeight: Responsive.isMobile(context) ? 45 : 50,
               dataRowHeight: Responsive.isMobile(context) ? 45 : 50,
-              headingRowColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) => Colors.grey.shade50,
+              headingRowColor: WidgetStateProperty.resolveWith<Color>(
+                (Set<WidgetState> states) => Colors.grey.shade50,
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -431,7 +431,7 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
       DataColumn(
         label: Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text('Waktu', style: headerStyle),
+          child: Text('Waktu Terakhir Update', style: headerStyle),
         ),
       ),
       DataColumn(
