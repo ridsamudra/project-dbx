@@ -209,7 +209,7 @@ class _LoginPageState extends State<LoginPage>
           Text(
             'Selamat Datang Kembali',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   color: Colors.grey[800],
                 ),
             textAlign: TextAlign.center,

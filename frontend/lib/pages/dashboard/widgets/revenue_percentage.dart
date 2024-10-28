@@ -143,7 +143,7 @@ class _RevenueRealtimePercentageState extends State<RevenueRealtimePercentage> {
                   style: TextStyle(
                     fontSize: Responsive.getFontSize(context,
                         mobile: 18, tablet: 20, desktop: 22),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontFamily: 'Montserrat',
                   ),
                 ),
@@ -290,7 +290,7 @@ class _RevenueRealtimePercentageState extends State<RevenueRealtimePercentage> {
                             tablet: 16,
                             desktop: 16,
                           ),
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -359,7 +359,7 @@ class _RevenueRealtimePercentageState extends State<RevenueRealtimePercentage> {
               fontFamily: 'Montserrat',
               color: Colors.grey[600],
               fontSize: Responsive.getFontSize(context),
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 4),
@@ -444,7 +444,7 @@ class _RevenueRealtimePercentageState extends State<RevenueRealtimePercentage> {
             style: TextStyle(
               fontFamily: 'Montserrat',
               color: Colors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: Responsive.getFontSize(context,
                   mobile: 10, tablet: 12, desktop: 14),
             ),
@@ -525,7 +525,7 @@ class _RevenueRealtimePercentageState extends State<RevenueRealtimePercentage> {
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     color: isTouch ? Colors.black : const Color(0xFF757575),
-                    fontWeight: isTouch ? FontWeight.bold : FontWeight.w500,
+                    fontWeight: isTouch ? FontWeight.w600 : FontWeight.w500,
                     fontSize: Responsive.getFontSize(
                       context,
                       mobile: 10,

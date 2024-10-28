@@ -194,7 +194,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
               color: const Color(0xFF757575),
               fontSize: Responsive.getFontSize(context,
                   mobile: 10, tablet: 16, desktop: 16),
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -254,7 +254,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
                       style: TextStyle(
                         fontSize: Responsive.getFontSize(context,
                             mobile: 16, tablet: 18, desktop: 20),
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -474,7 +474,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
                     Text(
                       seriesName,
                       style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         color: Colors.black,
                       ),
                     ),
@@ -484,7 +484,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
                 Text(
                   point.x,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
                 ),
@@ -492,7 +492,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
                 Text(
                   'Rp $formattedValue',
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
                 ),
@@ -554,7 +554,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
               color: const Color(0xFF757575),
               fontSize: Responsive.getFontSize(context,
                   mobile: 10, tablet: 16, desktop: 16),
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -687,7 +687,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
                   style: TextStyle(
                     fontSize: Responsive.getFontSize(context,
                         mobile: 16, tablet: 18, desktop: 20),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(height: Responsive.isMobile(context) ? 12 : 16),
@@ -898,7 +898,7 @@ class _MonthlyIncomeDetailsState extends State<MonthlyIncomeDetails> {
                   style: TextStyle(
                     fontSize: Responsive.getFontSize(context,
                         mobile: 16, tablet: 18, desktop: 20),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(height: Responsive.isMobile(context) ? 12 : 16),

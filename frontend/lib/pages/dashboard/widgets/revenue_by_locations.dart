@@ -147,7 +147,7 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
                       tablet: 16,
                       desktop: 16,
                     ),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 _buildFilterButton(),
@@ -219,7 +219,7 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
                   style: TextStyle(
                     fontSize: Responsive.getFontSize(context,
                         mobile: 18, tablet: 20, desktop: 22),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontFamily: 'Montserrat',
                   ),
                 ),
@@ -295,7 +295,7 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
                     fontFamily: 'Montserrat',
                     color: Colors.red.shade700,
                     fontSize: Responsive.isMobile(context) ? 14 : 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4.0),
@@ -342,7 +342,7 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
                         color: const Color(0xFF757575),
                         fontSize: Responsive.getFontSize(context,
                             mobile: 10, tablet: 14, desktop: 14),
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -382,7 +382,7 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
                   fontFamily: 'Montserrat',
                   fontSize: Responsive.getFontSize(context,
                       mobile: 10, tablet: 14, desktop: 14),
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   color: Colors.grey.shade800,
                 ),
                 dataTextStyle: TextStyle(
@@ -423,7 +423,7 @@ class _RevenueByLocationsState extends State<RevenueByLocations> {
       fontFamily: 'Montserrat',
       fontSize:
           Responsive.getFontSize(context, mobile: 10, tablet: 14, desktop: 14),
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w600,
       color: Colors.grey.shade800,
     );
 

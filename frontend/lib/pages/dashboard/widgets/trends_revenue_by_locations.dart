@@ -254,7 +254,7 @@ class _RevenueTrendsByLocationsState extends State<RevenueTrendsByLocations> {
                           tablet: 16,
                           desktop: 16,
                         ),
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -343,7 +343,7 @@ class _RevenueTrendsByLocationsState extends State<RevenueTrendsByLocations> {
                                   '$locationName\n',
                                   const TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                   children: [
                                     TextSpan(
@@ -582,7 +582,7 @@ class _RevenueTrendsByLocationsState extends State<RevenueTrendsByLocations> {
               tablet: 12,
               desktop: 16,
             ),
-            fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
+            fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.normal,
             color: isHighlighted ? Colors.black : Colors.black54,
           ),
           child: Text(text),

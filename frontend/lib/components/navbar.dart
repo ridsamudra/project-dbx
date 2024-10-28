@@ -24,7 +24,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             desktop: 16, // Custom responsive size untuk desktop
           ),
           fontFamily: 'Montserrat',
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
       ),
       // backgroundColor:

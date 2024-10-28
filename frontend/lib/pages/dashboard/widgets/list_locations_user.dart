@@ -264,7 +264,7 @@ class _UsersLocationsState extends State<UsersLocations> {
           text,
           style: TextStyle(
             fontFamily: 'Montserrat',
-            fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+            fontWeight: isHeader ? FontWeight.w600 : FontWeight.normal,
             fontSize: Responsive.isMobile(context) ? 12 : 14,
           ),
         ),

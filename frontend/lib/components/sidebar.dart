@@ -343,7 +343,7 @@ class _SidebarState extends State<Sidebar> {
               userName,
               style: TextStyle(
                 color: Colors.black87,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 fontSize: Responsive.getFontSize(context,
                     mobile: 14, tablet: 16, desktop: 18),
               ),

@@ -323,7 +323,7 @@ class _RevenueTrendsState extends State<RevenueTrends> {
                           tablet: 16,
                           desktop: 16,
                         ),
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -415,7 +415,7 @@ class _RevenueTrendsState extends State<RevenueTrends> {
                                   '$barType\n',
                                   TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                     fontSize: Responsive.getFontSize(
                                       context,
                                       mobile: 10,
@@ -700,7 +700,7 @@ class _RevenueTrendsState extends State<RevenueTrends> {
               tablet: 12,
               desktop: 16,
             ),
-            fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
+            fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.normal,
             color: isHighlighted ? Colors.black : Colors.black54,
           ),
           child: Text(label),

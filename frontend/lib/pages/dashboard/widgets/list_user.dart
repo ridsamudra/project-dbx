@@ -270,7 +270,7 @@ class _ListUsersState extends State<ListUsers> {
                     'OK',
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                       color: backgroundColor,
                     ),
                   ),

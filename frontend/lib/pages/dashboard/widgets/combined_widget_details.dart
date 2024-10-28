@@ -70,7 +70,7 @@ class _CombinedWidgetDetailsState extends State<CombinedWidgetDetails> {
                       tablet: 16,
                       desktop: 16,
                     ),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               SizedBox(height: Responsive.isMobile(context) ? 8.0 : 16.0),
