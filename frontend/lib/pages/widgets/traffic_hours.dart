@@ -167,14 +167,12 @@ class _TrafficHoursState extends State<TrafficHours> {
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12.0),
           ),
           child: Container(
-            constraints: BoxConstraints(
-              maxWidth: Responsive.isMobile(context) ? double.infinity : 400,
-              maxHeight: MediaQuery.of(context).size.height * 0.8,
-            ),
-            padding: const EdgeInsets.all(16.0),
+            width: MediaQuery.of(context).size.width * 0.2,
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -182,7 +180,7 @@ class _TrafficHoursState extends State<TrafficHours> {
                   'Pilih Lokasi',
                   style: TextStyle(
                     fontSize: Responsive.getFontSize(context,
-                        mobile: 18, tablet: 20, desktop: 22),
+                        mobile: 14, tablet: 16, desktop: 16),
                     fontWeight: FontWeight.w600,
                     fontFamily: 'Montserrat',
                   ),
@@ -277,7 +275,7 @@ class _TrafficHoursState extends State<TrafficHours> {
     return ElevatedButton.icon(
       icon: Icon(Icons.location_on,
           size: Responsive.getFontSize(context,
-              mobile: 12, tablet: 16, desktop: 18)),
+              mobile: 12, tablet: 14, desktop: 14)),
       label: Text(
         selectedLocation ?? 'Pilih Lokasi',
         style: TextStyle(

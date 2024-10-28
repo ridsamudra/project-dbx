@@ -419,7 +419,7 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
       icon: Icon(
         Icons.filter_list,
         size: Responsive.getFontSize(context,
-            mobile: 12, tablet: 16, desktop: 18),
+            mobile: 12, tablet: 14, desktop: 14),
       ),
       label: Text(
         'Filter',
@@ -453,12 +453,12 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(12.0),
           ),
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width * 0.2,
             padding:
-                const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -474,10 +474,16 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
                   label: 'Filter Visibilitas',
                   onTap: _showVisibilityDialog,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Tutup", style: TextStyle(fontSize: 14)),
+                  child: Text(
+                    "Tutup",
+                    style: TextStyle(
+                      fontSize: Responsive.getFontSize(context,
+                          mobile: 14, tablet: 16, desktop: 16),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -492,11 +498,13 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
       required String label,
       required VoidCallback onTap}) {
     return ListTile(
-      leading: Icon(icon, size: 20),
+      leading: Icon(icon, size: 22),
       title: Text(label,
           style: TextStyle(
-              fontSize: Responsive.getFontSize(context,
-                  mobile: 12, tablet: 14, desktop: 14))),
+            fontSize: Responsive.getFontSize(context,
+                mobile: 14, tablet: 16, desktop: 16),
+            fontFamily: 'Montserrat',
+          )),
       onTap: () {
         Navigator.pop(context);
         onTap();
@@ -508,26 +516,54 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text('Pilih Rentang Waktu',
-              style: TextStyle(
-                  fontSize: Responsive.getFontSize(context,
-                      mobile: 14, tablet: 16, desktop: 18))),
-          children: ['7 Hari', '6 Bulan', '6 Tahun'].map((String filter) {
-            return SimpleDialogOption(
-              child: Text(filter,
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Pilih Rentang Waktu',
                   style: TextStyle(
-                      fontSize: Responsive.getFontSize(context,
-                          mobile: 12, tablet: 14, desktop: 14))),
-              onPressed: () {
-                setState(() {
-                  selectedTimeFilter = filter;
-                });
-                Navigator.pop(context);
-                fetchTroubleData();
-              },
-            );
-          }).toList(),
+                    fontSize: Responsive.getFontSize(context,
+                        mobile: 14, tablet: 16, desktop: 16),
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Montserrat',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ...['7 Hari', '6 Bulan', '6 Tahun'].map((String filter) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        selectedTimeFilter = filter;
+                      });
+                      Navigator.pop(context);
+                      fetchTroubleData();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        filter,
+                        style: TextStyle(
+                          fontSize: Responsive.getFontSize(context,
+                              mobile: 14, tablet: 16, desktop: 16),
+                          // fontWeight: FontWeight.w400,
+                          fontFamily: 'Montserrat',
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -537,47 +573,72 @@ class _TroubleTransactionsState extends State<TroubleTransactions> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Tombol Visibilitas',
-              style: TextStyle(
-                  fontSize: Responsive.getFontSize(context,
-                      mobile: 14, tablet: 16, desktop: 18))),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: locationNames.map((location) {
-                    return CheckboxListTile(
-                      title: Text(location,
-                          style: TextStyle(
-                              fontSize: Responsive.getFontSize(context,
-                                  mobile: 12, tablet: 14, desktop: 14))),
-                      value: visibleLocations[location] ?? true,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          visibleLocations[location] = value!;
-                        });
-                        this.setState(() {});
-                      },
-                    );
-                  }).toList(),
-                ),
-              );
-            },
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Tutup',
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Tombol Visibilitas',
                   style: TextStyle(
+                    fontSize: Responsive.getFontSize(context,
+                        mobile: 12, tablet: 16, desktop: 16),
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Montserrat',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: locationNames.map((location) {
+                          return CheckboxListTile(
+                            title: Text(
+                              location,
+                              style: TextStyle(
+                                fontSize: Responsive.getFontSize(context,
+                                    mobile: 12, tablet: 16, desktop: 16),
+                                fontFamily: 'Montserrat',
+                              ),
+                            ),
+                            value: visibleLocations[location] ?? true,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                visibleLocations[location] = value!;
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  child: Text(
+                    'Tutup',
+                    style: TextStyle(
                       fontSize: Responsive.getFontSize(context,
-                          mobile: 12, tablet: 14, desktop: 14))),
-              onPressed: () {
-                Navigator.of(context).pop();
-                fetchTroubleData();
-              },
+                          mobile: 12, tablet: 16, desktop: 16),
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    fetchTroubleData();
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

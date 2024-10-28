@@ -486,7 +486,7 @@ class _RevenueTrendsState extends State<RevenueTrends> {
       icon: Icon(
         Icons.filter_list,
         size: Responsive.getFontSize(context,
-            mobile: 12, tablet: 16, desktop: 18),
+            mobile: 12, tablet: 14, desktop: 14),
       ),
       label: Text(
         'Filter',
@@ -516,23 +516,21 @@ class _RevenueTrendsState extends State<RevenueTrends> {
     );
   }
 
-// Show Filter Options in a Compact Minimalist Modal Pop-up
+// Ubah tampilan modal filter
   void _showFilterOptions(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                10.0), // Slightly less rounded for compact look
+            borderRadius: BorderRadius.circular(12.0),
           ),
           child: Container(
-            width: MediaQuery.of(context).size.width *
-                0.7, // Set to 70% of screen width for compact size
-            padding: const EdgeInsets.symmetric(
-                vertical: 12.0, horizontal: 12.0), // Smaller padding
+            width: MediaQuery.of(context).size.width * 0.2,
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Column(
-              mainAxisSize: MainAxisSize.min, // Make dialog height compact
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 _buildFilterOption(
                   context,
@@ -552,12 +550,18 @@ class _RevenueTrendsState extends State<RevenueTrends> {
                   label: 'Filter Visibilitas',
                   onTap: _showVisibilityDialog,
                 ),
-                const SizedBox(height: 8), // Smaller space between items
+                const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Tutup",
-                      style: TextStyle(
-                          fontSize: 14)), // Smaller font for compactness
+                  child: Text(
+                    "Tutup",
+                    style: TextStyle(
+                      fontSize: Responsive.getFontSize(context,
+                          mobile: 12, tablet: 16, desktop: 16),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -567,16 +571,19 @@ class _RevenueTrendsState extends State<RevenueTrends> {
     );
   }
 
-// Helper method for building filter options (untouched)
+// Helper method untuk membangun opsi filter (tidak diubah)
   Widget _buildFilterOption(BuildContext context,
       {required IconData icon,
       required String label,
       required VoidCallback onTap}) {
     return ListTile(
-      leading: Icon(icon, size: 20), // Slightly smaller icon size
+      leading: Icon(icon, size: 22),
       title: Text(label,
-          style:
-              TextStyle(fontSize: 14)), // Reduced font size for compact design
+          style: TextStyle(
+            fontSize: Responsive.getFontSize(context,
+                mobile: 12, tablet: 16, desktop: 16),
+            fontFamily: 'Montserrat',
+          )),
       onTap: () {
         Navigator.pop(context);
         onTap();
@@ -584,26 +591,58 @@ class _RevenueTrendsState extends State<RevenueTrends> {
     );
   }
 
-// Existing Dialogs for Filters (minimalist tweaks)
   void _showTimeFilterDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          title:
-              const Text('Pilih Rentang Waktu', style: TextStyle(fontSize: 18)),
-          children: ['7 Hari', '6 Bulan', '6 Tahun'].map((String filter) {
-            return SimpleDialogOption(
-              child: Text(filter),
-              onPressed: () {
-                setState(() {
-                  selectedTimeFilter = filter;
-                });
-                Navigator.pop(context);
-                fetchRevenueData();
-              },
-            );
-          }).toList(),
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Pilih Rentang Waktu',
+                  style: TextStyle(
+                    fontSize: Responsive.getFontSize(context,
+                        mobile: 12, tablet: 16, desktop: 16),
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Montserrat',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ...['7 Hari', '6 Bulan', '6 Tahun'].map((String filter) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        selectedTimeFilter = filter;
+                      });
+                      Navigator.pop(context);
+                      fetchRevenueData();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        filter,
+                        style: TextStyle(
+                          fontSize: Responsive.getFontSize(context,
+                              mobile: 12, tablet: 16, desktop: 16),
+                          // fontWeight: FontWeight.w400,
+                          fontFamily: 'Montserrat',
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -613,20 +652,54 @@ class _RevenueTrendsState extends State<RevenueTrends> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('Pilih Lokasi', style: TextStyle(fontSize: 18)),
-          children: locations.map((String location) {
-            return SimpleDialogOption(
-              child: Text(location),
-              onPressed: () {
-                setState(() {
-                  selectedLocationFilter = location;
-                });
-                Navigator.pop(context);
-                fetchRevenueData();
-              },
-            );
-          }).toList(),
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Pilih Lokasi',
+                  style: TextStyle(
+                    fontSize: Responsive.getFontSize(context,
+                        mobile: 12, tablet: 16, desktop: 16),
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Montserrat',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ...locations.map((String location) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        selectedLocationFilter = location;
+                      });
+                      Navigator.pop(context);
+                      fetchRevenueData();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        location,
+                        style: TextStyle(
+                          fontSize: Responsive.getFontSize(context,
+                              mobile: 12, tablet: 16, desktop: 16),
+                          // fontWeight: FontWeight.w400,
+                          fontFamily: 'Montserrat',
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -636,40 +709,72 @@ class _RevenueTrendsState extends State<RevenueTrends> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title:
-              const Text('Tombol Visibilitas', style: TextStyle(fontSize: 18)),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: visibleBars.keys.map((String key) {
-                    return CheckboxListTile(
-                      title: Text(key.capitalize(),
-                          style: TextStyle(fontSize: 16)),
-                      value: visibleBars[key],
-                      onChanged: (bool? value) {
-                        setState(() {
-                          visibleBars[key] = value!;
-                        });
-                        this.setState(() {});
-                      },
-                    );
-                  }).toList(),
-                ),
-              );
-            },
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Tutup', style: TextStyle(fontSize: 16)),
-              onPressed: () {
-                Navigator.of(context).pop();
-                fetchRevenueData();
-              },
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Tombol Visibilitas',
+                  style: TextStyle(
+                    fontSize: Responsive.getFontSize(context,
+                        mobile: 12, tablet: 16, desktop: 16),
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Montserrat',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: visibleBars.keys.map((String key) {
+                          return CheckboxListTile(
+                            title: Text(
+                              key.capitalize(),
+                              style: TextStyle(
+                                fontSize: Responsive.getFontSize(context,
+                                    mobile: 12, tablet: 16, desktop: 16),
+                                fontFamily: 'Montserrat',
+                              ),
+                            ),
+                            value: visibleBars[key],
+                            onChanged: (bool? value) {
+                              setState(() {
+                                visibleBars[key] = value!;
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  child: Text(
+                    'Tutup',
+                    style: TextStyle(
+                      fontSize: Responsive.getFontSize(context,
+                          mobile: 12, tablet: 16, desktop: 16),
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    fetchRevenueData();
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
