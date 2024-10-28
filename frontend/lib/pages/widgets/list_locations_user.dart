@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/users_locations.dart
+// lib/pages/widgets/users_locations.dart
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

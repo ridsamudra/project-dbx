@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/trouble_transactions.dart
+// lib/pages/widgets/trouble_transactions.dart
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';

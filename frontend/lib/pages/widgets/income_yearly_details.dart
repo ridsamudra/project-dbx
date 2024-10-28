@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/yearly_income_details.dart
+// lib/pages/widgets/yearly_income_details.dart
 
 import 'dart:convert';
 import 'package:flutter/services.dart';

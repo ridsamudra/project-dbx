@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/traffic_hours.dart
+// lib/pages/widgets/traffic_hours.dart
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

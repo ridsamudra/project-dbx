@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/revenue_trends_by_locations.dart
+// lib/pages/widgets/revenue_trends_by_locations.dart
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';

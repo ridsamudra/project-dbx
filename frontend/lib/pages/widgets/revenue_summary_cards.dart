@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/summary_cards.dart
+// lib/pages/widgets/summary_cards.dart
 
 import 'package:flutter/material.dart';
 import 'package:http/browser_client.dart';

@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/combined_widget_details.dart
+// lib/pages/widgets/combined_widget_details.dart
 
 import 'package:flutter/material.dart';
 import 'income_daily_details.dart';

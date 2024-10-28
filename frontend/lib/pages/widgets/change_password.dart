@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/change_password.dart
+// lib/pages/widgets/change_password.dart
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/combined_widget.dart
+// lib/pages/widgets/combined_widget.dart
 
 import 'package:flutter/material.dart';
 import 'trends_revenue.dart';

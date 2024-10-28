@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/revenue_realtime_percentage.dart
+// lib/pages/widgets/revenue_realtime_percentage.dart
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

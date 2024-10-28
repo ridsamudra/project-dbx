@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/post_status.dart
+// lib/pages/widgets/post_status.dart
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

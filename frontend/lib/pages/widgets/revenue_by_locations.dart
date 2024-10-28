@@ -1,4 +1,4 @@
-// lib/pages/dashboard/widgets/revenue_by_locations.dart
+// lib/pages/widgets/revenue_by_locations.dart
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
