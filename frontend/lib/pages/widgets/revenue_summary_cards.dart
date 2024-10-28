@@ -145,7 +145,7 @@ class _SummaryCardsState extends State<SummaryCards> {
                           tablet: 18,
                           desktop: 18,
                         ),
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

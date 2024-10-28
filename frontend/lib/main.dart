@@ -1,8 +1,8 @@
 // lib/main.dart
 
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/pages/login_page.dart';
-import 'package:frontend/pages/dashboard/dashboard.dart';
+import 'package:frontend/pages/auth/login_page.dart';
+import 'package:frontend/pages/dashboard.dart';
 
 void main() {
   runApp(const MyApp());

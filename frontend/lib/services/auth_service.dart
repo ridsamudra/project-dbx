@@ -7,8 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthService {
   final String _baseUrl = 'http://127.0.0.1:8000/api';
 
-  static const String _sessionKey =
-      'session_data'; // Key untuk menyimpan session data
+  static const String _sessionKey = 'session_data';
 
   final BrowserClient _client = BrowserClient()..withCredentials = true;
 
@@ -76,6 +75,7 @@ class AuthService {
   Future<void> _clearSessionData() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_sessionKey);
+    // ignore: avoid_print
     print('Session data dihapus!');
   }
 

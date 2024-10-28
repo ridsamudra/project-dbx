@@ -1,9 +1,9 @@
 // lib/pages/dashboard/dashboard.dart
 
 import 'package:flutter/material.dart';
-import '../../components/sidebar.dart';
-import '../../components/responsive.dart';
-import '../../components/navbar.dart'; // Added navbar import
+import '../components/sidebar.dart';
+import '../components/responsive.dart';
+import '../components/navbar.dart'; // Added navbar import
 import 'widgets/revenue_summary_cards.dart';
 import 'widgets/revenue_percentage.dart';
 import 'widgets/post_status.dart';
@@ -23,8 +23,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Navbar(
-          title: 'Halaman Utama Dashboard'), // Replaced AppBar with Navbar
+      appBar: const Navbar(title: 'Halaman Utama Dashboard'),
       drawer: const Sidebar(),
       // backgroundColor:
       //     Color(0xFFfc8404).withOpacity(0.75), // Set background color here

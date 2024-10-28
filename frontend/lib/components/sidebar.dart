@@ -4,16 +4,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/browser_client.dart';
 import 'package:frontend/services/auth_service.dart';
-import '../pages/dashboard/widgets/combined_widget_details.dart';
-import '../pages/dashboard/widgets/list_user.dart';
-import '../pages/dashboard/widgets/list_locations_user.dart';
-import '../pages/dashboard/widgets/change_password.dart';
+import '../pages/widgets/combined_widget_details.dart';
+import '../pages/widgets/list_user.dart';
+import '../pages/widgets/list_locations_user.dart';
+import '../pages/widgets/change_password.dart';
 import '../components/responsive.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SidebarState createState() => _SidebarState();
 }
 
