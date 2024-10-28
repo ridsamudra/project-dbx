@@ -48,6 +48,7 @@ ENV/
 **/build/*.dill*
 **/build/**/*.dill*
 **/*.dill.track.dill
+frontend/build/cache.dill.track.dill
 
 # IDE specific files
 .idea/
