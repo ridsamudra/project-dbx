@@ -47,7 +47,7 @@ ENV/
 # Flutter Cache Files
 **/build/*.dill*
 **/build/**/*.dill*
-**/cache.dill*
+**/*.dill.track.dill
 
 # IDE specific files
 .idea/
